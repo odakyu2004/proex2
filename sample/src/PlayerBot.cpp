@@ -27,12 +27,11 @@ PlayerBot::~PlayerBot() {
 bool PlayerBot::findGoal(Dungeon * dungeon)
 {
 	bool rtv(false);
+	if(dungeon->getTiles()){
 
-	answer = "n";
-	answer += "n";
-	answer += "w";
-	answer += "w";
-	rtv = true;
+	}
+	
+	
 	return rtv;
 }
 

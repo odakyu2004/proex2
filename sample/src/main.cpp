@@ -31,22 +31,3 @@ int run03(void)
 
 	return 0;
 }
-
-int run02(void )
-{
-	Dungeon d1;
-	d1.loadData();
-	return 0;
-}
-
-int run01(void )
-{
-	Tile tile;
-	return 0;
-}
-
-int run00(void )
-{
-	cout << "test" << endl;
-	return 0;
-}
