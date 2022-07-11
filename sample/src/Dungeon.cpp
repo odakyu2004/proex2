@@ -71,6 +71,12 @@ void Dungeon::loadData(void )
 		if (data[i].warp != -1) {
 			tiles[i]->setWarp(tiles[data[i].warp]);
 		}
+		cout << "[" << i << "]" << endl;
+		cout << "east" << data[i].east << endl;
+		cout << "south" << data[i].south << endl;
+		cout << "warp" << data[i].warp << endl;
+		cout << "nouth" << tiles[i+width] << endl;
+		cout << "west" << tiles[i+1] << endl;
 	}
 	return;
 }

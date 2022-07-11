@@ -12,6 +12,7 @@ Tile::Tile() {
 	this->setEast(nullptr);
 	this->setWest(nullptr);
 	this->setWarp(nullptr);
+	this->setCheck(nullptr);
 	this->setPlayerBot(nullptr);
 }
 
@@ -19,3 +20,4 @@ Tile::~Tile() {
 
 }
 
+//一度探索したか判定

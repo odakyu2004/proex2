@@ -7,6 +7,7 @@
 #include "Tile.h"
 #include "Dungeon.h"
 #include <fstream>
+#include <iostream>
 
 
 using namespace std;
@@ -27,11 +28,15 @@ PlayerBot::~PlayerBot() {
 bool PlayerBot::findGoal(Dungeon * dungeon)
 {
 	bool rtv(false);
-	if(dungeon->getTiles()){
 
+	if(dungeon->getTiles()==0x0){
+		cout << "hogehoge" << endl;
+	answer = "n";
+	answer += "n";
+	answer += "w";
+	answer += "w";
+	rtv = true;
 	}
-	
-	
 	return rtv;
 }
 
