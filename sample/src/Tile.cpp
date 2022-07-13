@@ -12,7 +12,7 @@ Tile::Tile() {
 	this->setEast(nullptr);
 	this->setWest(nullptr);
 	this->setWarp(nullptr);
-	this->setCheck(nullptr);
+	//this->setCheck(nullptr);
 	this->setPlayerBot(nullptr);
 }
 

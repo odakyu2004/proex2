@@ -10,6 +10,7 @@
 #include <iostream>
 
 
+
 using namespace std;
 
 PlayerBot::PlayerBot(void ) {
@@ -29,14 +30,17 @@ bool PlayerBot::findGoal(Dungeon * dungeon)
 {
 	bool rtv(false);
 
-	if(dungeon->getTiles()==0x0){
-		cout << "hogehoge" << endl;
-	answer = "n";
-	answer += "n";
-	answer += "w";
-	answer += "w";
-	rtv = true;
-	}
+	
+	//while(1){
+		if((dungeon->getTiles()+1)==0x0){
+			
+			rtv = true;
+			//break;
+		}
+		int a =0;
+		cout << dungeon->getTile(a) << endl;
+	//}
+	
 	return rtv;
 }
 
