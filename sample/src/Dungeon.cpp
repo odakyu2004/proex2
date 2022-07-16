@@ -48,7 +48,6 @@ void Dungeon::loadData(void )
 	ifs >> length; // 南北方向の部屋の個数を読み込む
 	unsigned int size(width * length); //unsigned int型のsizeという変数を宣言し部屋数の総数を代入している
 	cout << size << endl; //部屋の数を表示
-	this->sizet = size;
 	// ここから部屋のデータの保存 N,S,W,E,warpID
 	room data[size];//room構造体の配列宣言
 
@@ -60,6 +59,7 @@ void Dungeon::loadData(void )
 		// 左上から右に移動
 		// 南と東の壁の接続状況がわかれば、北と西も自動的にわかる
 		// 一方通行はなしと考える
+		que.push(i);
 		if (data[i].south == 1) { //もし南側が通路だったら
 			tiles[i]->setSouth(tiles[i+width]); //一個したの行の部屋なので横幅分足せば１行下に行く
 			tiles[i+width]->setNorth(tiles[i]); //
@@ -72,12 +72,6 @@ void Dungeon::loadData(void )
 			tiles[i]->setWarp(tiles[data[i].warp]);
 		}
 		
-		cout << "[" << i << "]" << endl;
-		cout << "east" << data[i].east << endl;
-		cout << "south" << data[i].south << endl;
-		cout << "warp" << data[i].warp << endl;
-		cout << "nouth" << tiles[i+width] << endl;
-		cout << "west" << tiles[i+1] << endl;
 	}
 	return;
 }

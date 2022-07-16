@@ -7,6 +7,7 @@
 #define _SRC_DUNGEON_H_
 
 #include <vector>
+#include <queue>
 
 using namespace std;
 
@@ -19,7 +20,7 @@ public:
 	Dungeon();
 	virtual ~Dungeon();
 	void loadData(void );
-	int sizet;
+	queue<int> que;
 	vector<Tile *> * getTiles(void ) { return & tiles; }
 	Tile * getTile(int number) { return tiles[number]; }//引数に欲しい部屋の番号を入れたらその部屋の状況を返す
 };

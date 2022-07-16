@@ -6,7 +6,6 @@
 #ifndef _SRC_PLAYERBOT_H_
 #define _SRC_PLAYERBOT_H_
 #include <string>
-#include <queue>
 
 using namespace std;
 
@@ -16,6 +15,7 @@ class Dungeon;
 class PlayerBot {
 private:
 	string answer;
+	string tmpanswer;
 	Tile * currentLocation;
 public:
 	PlayerBot();
