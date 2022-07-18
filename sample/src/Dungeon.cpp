@@ -42,8 +42,7 @@ Dungeon::~Dungeon() {
 void Dungeon::loadData(void )
 {
 	ifstream ifs("data.txt");
-	int width;  // 東西方向の部屋の個数
-	int length; // 南北方向の部屋の個数
+	
 	ifs >> width; // 東西方向の部屋の個数を読み込む
 	ifs >> length; // 南北方向の部屋の個数を読み込む
 	unsigned int size(width * length); //unsigned int型のsizeという変数を宣言し部屋数の総数を代入している

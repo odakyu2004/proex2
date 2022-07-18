@@ -9,17 +9,9 @@
 
 using namespace std;
 
-int run00(void );
-int run01(void );
-int run02(void );
 int run03(void );
 
 int main()
-{
-	return run03();
-}
-
-int run03(void)
 {
 	Dungeon d1;
 
