@@ -29,8 +29,10 @@ Dungeon::Dungeon() {
 }
 
 Dungeon::~Dungeon() {
-	for(unsigned int i=0; i<tiles.size(); i++) {
-		delete tiles[i];
+	for(unsigned int i=0; i<length; i++) {
+		for(unsigned int j=0; j<width; j++) {
+			delete tiles[i][j];
+		}
 	}
 }
 
@@ -48,29 +50,32 @@ void Dungeon::loadData(void )
 	unsigned int size(width * length); //unsigned int型のsizeという変数を宣言し部屋数の総数を代入している
 	cout << size << endl; //部屋の数を表示
 	// ここから部屋のデータの保存 N,S,W,E,warpID
-	room data[size];//room構造体の配列宣言
-
-	for(unsigned int i=0; i<size; i++) { //ループで１行ずつデータを配列に保存
-		ifs >> data[i]; // 2行目以降,部屋の接続状況が保存されているので一時的にdataへ
-		tiles.push_back(new Tile); //Tile.hで宣言されているTile *をtilesというvectorで宣言してあるので、そこにpush_backでTileを代入している
+	room data[width][length];//room構造体の配列宣言
+	
+	for(unsigned int i=0; i<length; i++) { //ループで１行ずつデータを配列に保存
+		for(unsigned int j=0; j<width; j++) { 
+			ifs >> data[i][j]; 
+			tiles[0].push_back(new Tile);
+		}
 	}
-	for(unsigned int i=0; i<size; i++) {
-		// 左上から右に移動
-		// 南と東の壁の接続状況がわかれば、北と西も自動的にわかる
-		// 一方通行はなしと考える
-		que.push(i);
-		if (data[i].south == 1) { //もし南側が通路だったら
-			tiles[i]->setSouth(tiles[i+width]); //一個したの行の部屋なので横幅分足せば１行下に行く
-			tiles[i+width]->setNorth(tiles[i]); //
+	
+	for(unsigned int i=0; i<length; i++) {
+		for(unsigned int j=0; j<width; j++) { 
+			if (data[i][j].south == 1) { //もし南側が通路だったら
+				tiles[i][j]->setSouth(tiles[i+width][j]); //一個したの行の部屋なので横幅分足せば１行下に行く
+				tiles[i+width][j]->setNorth(tiles[i][j]); //
+			}
+			if (data[i][j].east == 1) { //もし東側が通路だったら
+				tiles[i][j]->setEast(tiles[i+1][j]); //西から来たので東の部屋は一個隣なのでプラス1する
+				tiles[i+1][j]->setWest(tiles[i][j]); //
+			}
+			if (data[i][j].warp != -1) {
+				unsigned int Xw=0,Yw=0;
+				Yw=(data[i][j].warp)/length;
+				Xw=(data[i][j].warp)-(width*Yw);
+				tiles[i][j]->setWarp(tiles[Xw][Yw]);
+			}
 		}
-		if (data[i].east == 1) { //もし東側が通路だったら
-			tiles[i]->setEast(tiles[i+1]); //西から来たので東の部屋は一個隣なのでプラス1する
-			tiles[i+1]->setWest(tiles[i]); //
-		}
-		if (data[i].warp != -1) {
-			tiles[i]->setWarp(tiles[data[i].warp]);
-		}
-		
 	}
 	return;
 }

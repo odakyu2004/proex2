@@ -14,11 +14,12 @@ int run03(void );
 int main()
 {
 	Dungeon d1;
-
+	cout << "OK0" << endl;
 	d1.loadData();
-
+	cout << "OK1" << endl;
 	PlayerBot bot;
 	bot.findGoal(&d1);
+	cout << "OK2" << endl;
 	bot.saveAnswer();
 
 	return 0;
