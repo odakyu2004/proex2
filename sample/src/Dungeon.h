@@ -1,8 +1,3 @@
-/* Dungeon.h
- *
- * Copyright (C), 2022, x-suzuki
- */
-
 #ifndef _SRC_DUNGEON_H_
 #define _SRC_DUNGEON_H_
 
@@ -24,7 +19,10 @@ public:
 	void loadData(void );
 	void setWidth(int width){this->width = width;}
 	int getWidth(void) {return width;}
-	queue<int> que;
+	int getSize(void){ return width*length;}
+	int X;
+	int Y;
+
 	vector<Tile *> * getTiles(void ) { return & tiles; }
 	Tile * getTile(int number) { return tiles[number]; }//引数に欲しい部屋の番号を入れたらその部屋の状況を返す
 };

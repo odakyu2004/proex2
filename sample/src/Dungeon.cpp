@@ -1,7 +1,3 @@
-/* Dungeon.cpp
- *
- * Copyright (C), 2022, x-suzuki
- */
 
 #include "Dungeon.h"
 #include "Tile.h"
@@ -34,11 +30,7 @@ Dungeon::~Dungeon() {
 	}
 }
 
-/**
- * @fn Dungeon::loadData(void )
- *  データを読み込んで迷宮を再生する
- * @brief 読み込んだデータを一時的に保存し、vectorで数を作った後、一時データから一気に接続状況を作る
- */
+
 void Dungeon::loadData(void )
 {
 	ifstream ifs("data.txt");
@@ -55,10 +47,6 @@ void Dungeon::loadData(void )
 		tiles.push_back(new Tile); //Tile.hで宣言されているTile *をtilesというvectorで宣言してあるので、そこにpush_backでTileを代入している
 	}
 	for(unsigned int i=0; i<size; i++) {
-		// 左上から右に移動
-		// 南と東の壁の接続状況がわかれば、北と西も自動的にわかる
-		// 一方通行はなしと考える
-		que.push(i);
 		if (data[i].south == 1) { //もし南側が通路だったら
 			tiles[i]->setSouth(tiles[i+width]); //一個したの行の部屋なので横幅分足せば１行下に行く
 			tiles[i+width]->setNorth(tiles[i]); //

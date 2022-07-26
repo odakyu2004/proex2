@@ -31,10 +31,10 @@ bool PlayerBot::findGoal(Dungeon * dungeon)
 	/* 4 方向への隣接頂点への移動を表すベクトル */
 	const int dx[5] = { 0,1,2,3,4};
 	int next=0;
+	int i =0;
 	bool rtv(false);
-	vector<int> dist(dungeon->getSize(), -1); 
-	dist[0] = 0;
-	vector<int> prev(dungeon->getSize(), -1);
+
+	vector<int > prev(dungeon->getSize(),0);
 	queue<int> que;
 	que.push(0);
 	
@@ -47,25 +47,59 @@ bool PlayerBot::findGoal(Dungeon * dungeon)
 			if(dx[direction]==0 ){
 				if(dungeon->getTile(x)->getNorth()!= nullptr ){
 					next=x-dungeon->length;
-					cout << "N" << endl;
+					
+					if(dungeon->getTile(next)->getVisit()== nullptr ){
+						cout << "N" << endl;
+						que.push(next);
+						prev[next]=x;
+						dungeon->getTile(x)->setVisit(dungeon->getTile(next));
+						dungeon->getTile(next)->setVisit(dungeon->getTile(x));
+					}else {
+						next=x+dungeon->length;
+					}
 				}
 			}
 			if(dx[direction]==1 ){
 				if(dungeon->getTile(x)->getEast()!= nullptr ){
 					next=x+1;
-					cout << "E" << endl;
+					if(dungeon->getTile(next)->getVisit()== nullptr ){
+						cout << "E" << endl;
+						que.push(next);
+						prev[next]=x;
+						dungeon->getTile(x)->setVisit(dungeon->getTile(next));
+						dungeon->getTile(next)->setVisit(dungeon->getTile(x));
+					}else {
+						next=x-1;
+					}
 				}
 			}
+			
 			if(dx[direction]==2 ){
 				if(dungeon->getTile(x)->getSouth()!= nullptr ){
 					next=x+dungeon->length;
-					cout << "S" << endl;
+					if(dungeon->getTile(next)->getVisit()== nullptr ){
+						cout << "S" << endl;
+						que.push(next);
+						prev[next]=x;
+						dungeon->getTile(x)->setVisit(dungeon->getTile(next));
+						dungeon->getTile(next)->setVisit(dungeon->getTile(x));
+					}else {
+						next=x-dungeon->length;
+					}
 				}
 			}
 			if(dx[direction]==3 ){
 				if(dungeon->getTile(x)->getWest()!= nullptr ){
 					next=x-1;
-					cout << "W" << endl;
+					if(dungeon->getTile(next)->getVisit()== nullptr ){
+						cout << "W" << endl;
+						que.push(next);
+						prev[next]=x;
+						dungeon->getTile(x)->setVisit(dungeon->getTile(next));
+						dungeon->getTile(next)->setVisit(dungeon->getTile(x));
+					}else {
+						next=x+1;
+					}
 				}
 			}
 			if(dx[direction]==4 ){
@@ -74,22 +108,21 @@ bool PlayerBot::findGoal(Dungeon * dungeon)
 				}
 			}
 			
-			if(dist[next]==-1){
-				que.push(next);
-				dungeon->getTile(next)->setVisit(dungeon->getTile(x));
-				dist[next] = dist[x] + 1;
-				prev[next] = x;
-			}
 		}
-		
-		if(x==dungeon->getSize()-1){
+		if(x==dungeon->getSize()){
 			break;
 		}
 		
 	}
-	/*for(unsigned int i=0;i<dungeon->getSize();i++){
-		cout << prev[i] << endl;
-	}*/
+
+	while (i == dungeon->getSize()) {
+
+        // 前の頂点へ行く
+        int p = prev[i];
+		cout << p << endl;
+        i = p;
+    }
+    
 	rtv=true;
 	
 	return rtv;
@@ -104,4 +137,3 @@ void PlayerBot::saveAnswer(void )
 
 	return;
 }
-
