@@ -30,11 +30,12 @@ bool PlayerBot::findGoal(Dungeon * dungeon)
 {
 	/* 4 方向への隣接頂点への移動を表すベクトル */
 	const int dx[5] = { 0,1,2,3,4};
+	int p =0;
 	int next=0;
 	int i =0;
 	bool rtv(false);
 
-	vector<int > prev(dungeon->getSize(),0);
+	stack<int > prev;
 	queue<int> que;
 	que.push(0);
 	
@@ -51,7 +52,7 @@ bool PlayerBot::findGoal(Dungeon * dungeon)
 					if(dungeon->getTile(next)->getVisit()== nullptr ){
 						cout << "N" << endl;
 						que.push(next);
-						prev[next]=x;
+						prev.push(next);
 						dungeon->getTile(x)->setVisit(dungeon->getTile(next));
 						dungeon->getTile(next)->setVisit(dungeon->getTile(x));
 					}else {
@@ -65,7 +66,7 @@ bool PlayerBot::findGoal(Dungeon * dungeon)
 					if(dungeon->getTile(next)->getVisit()== nullptr ){
 						cout << "E" << endl;
 						que.push(next);
-						prev[next]=x;
+						prev.push(next);
 						dungeon->getTile(x)->setVisit(dungeon->getTile(next));
 						dungeon->getTile(next)->setVisit(dungeon->getTile(x));
 					}else {
@@ -80,7 +81,7 @@ bool PlayerBot::findGoal(Dungeon * dungeon)
 					if(dungeon->getTile(next)->getVisit()== nullptr ){
 						cout << "S" << endl;
 						que.push(next);
-						prev[next]=x;
+						prev.push(next);
 						dungeon->getTile(x)->setVisit(dungeon->getTile(next));
 						dungeon->getTile(next)->setVisit(dungeon->getTile(x));
 					}else {
@@ -94,7 +95,7 @@ bool PlayerBot::findGoal(Dungeon * dungeon)
 					if(dungeon->getTile(next)->getVisit()== nullptr ){
 						cout << "W" << endl;
 						que.push(next);
-						prev[next]=x;
+						prev.push(next);
 						dungeon->getTile(x)->setVisit(dungeon->getTile(next));
 						dungeon->getTile(next)->setVisit(dungeon->getTile(x));
 					}else {
@@ -110,21 +111,46 @@ bool PlayerBot::findGoal(Dungeon * dungeon)
 			
 		}
 		if(x==dungeon->getSize()){
+			cout << "---" << endl;
 			break;
 		}
 		
 	}
 
-	while (i == dungeon->getSize()) {
 
-        // 前の頂点へ行く
-        int p = prev[i];
-		cout << p << endl;
-        i = p;
-    }
+	for(i=0;i!=dungeon->getSize()-1;i++){
+		p = prev.top();
+		prev.pop();
+		
+		if(dungeon->getTile(p)->getNorth()!= nullptr ){
+			if(dungeon->getTile(p-dungeon->length)->getVisit2()== nullptr ){
+				cout << "N" << endl;
+				dungeon->getTile(p)->setVisit2(dungeon->getTile(p-dungeon->length));
+				dungeon->getTile(p-dungeon->length)->setVisit2(dungeon->getTile(p));
+			}
+		}else if(dungeon->getTile(p)->getEast()!= nullptr ){
+			if(dungeon->getTile(p+1)->getVisit2()== nullptr ){
+				cout << "E" << endl;
+				dungeon->getTile(p)->setVisit2(dungeon->getTile(p+1));
+				dungeon->getTile(p+1)->setVisit2(dungeon->getTile(p));
+			}
+		}else if(dungeon->getTile(p)->getSouth()!= nullptr ){
+			if(dungeon->getTile(p+dungeon->length)->getVisit2()== nullptr ){
+				cout << "S" << endl;
+				dungeon->getTile(p)->setVisit2(dungeon->getTile(p+dungeon->length));
+				dungeon->getTile(p+dungeon->length)->setVisit2(dungeon->getTile(p));
+			}
+		}else if(dungeon->getTile(p)->getWest()!= nullptr ){
+			if(dungeon->getTile(p-1)->getVisit2()== nullptr ){
+				cout << "W" << endl;
+				dungeon->getTile(p)->setVisit2(dungeon->getTile(p-1));
+				dungeon->getTile(p-1)->setVisit2(dungeon->getTile(p));
+			}
+		}
+	}
     
 	rtv=true;
-	
+
 	return rtv;
 }
 

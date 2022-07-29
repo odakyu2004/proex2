@@ -13,6 +13,8 @@ Tile::Tile() {
 	this->setWest(nullptr);
 	this->setWarp(nullptr);
 	this->setVisit(nullptr);
+	this->setVisit2(nullptr);
+	
 	this->setPlayerBot(nullptr);
 }
 

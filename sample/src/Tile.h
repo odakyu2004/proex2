@@ -16,6 +16,7 @@ private:
 	Tile * west;
 	Tile * warp;
 	Tile * visit;
+	Tile * visit2;
 	PlayerBot * bot;
 public:
 	Tile();
@@ -32,6 +33,8 @@ public:
 	Tile * getWarp(void ) { return warp; }
 	void setVisit(Tile * visit) { this->visit = visit; }
 	Tile * getVisit(void ) { return visit; }
+	void setVisit2(Tile * visit2) { this->visit2 = visit2; }
+	Tile * getVisit2(void ) { return visit2; }
 	void setPlayerBot(PlayerBot * bot) { this->bot = bot; }
 	PlayerBot * getPlayerBot(void ) { return bot; }
 };
