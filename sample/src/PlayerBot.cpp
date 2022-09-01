@@ -1,4 +1,4 @@
-//* PlayerBot.cpp
+/* PlayerBot.cpp
  *
  * Copyright (C), 2022, x-suzuki
  */
