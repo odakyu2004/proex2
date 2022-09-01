@@ -1,4 +1,4 @@
-/* PlayerBot.cpp
+//* PlayerBot.cpp
  *
  * Copyright (C), 2022, x-suzuki
  */
@@ -7,18 +7,17 @@
 #include "Tile.h"
 #include "Dungeon.h"
 #include <fstream>
-#include <iostream>
-
+#include <stack>
 
 
 using namespace std;
 
 PlayerBot::PlayerBot(void ) {
 	this->setCurrentLocation(nullptr);
-	this->setCount(0);
 }
 
 PlayerBot::~PlayerBot() {
+
 }
 
 /**
@@ -26,73 +25,133 @@ PlayerBot::~PlayerBot() {
  * ダンジョンのゴールまでの行き方を探す.
  *
  */
-bool PlayerBot::findGoal(Dungeon * dungeon)
+bool PlayerBot::findGoal(Dungeon * map)
 {
-	/* 4 方向への隣接頂点への移動を表すベクトル */
-	const int dx[5] = { 0,1,2,3,4};
-	int next_x =0, next_y =0;
+	int size = map->getWidth()*map->getLength();
 	bool rtv(false);
-	vector<vector<int> > dist(dungeon->length, vector<int>(dungeon->width, -1)); 
-	dist[0][0] = 0;
-	vector<vector<int> > prev_x(dungeon->length, vector<int>(dungeon->width, -1));
-    vector<vector<int> > prev_y(dungeon->length, vector<int>(dungeon->width, -1));
-	queue<pair<int, int> > que;
-	que.push(make_pair(0, 0));
-	while(!que.empty()){
-		pair<int, int> current_pos = que.front(); 
-	    int x = current_pos.first;
-        int y = current_pos.second;
+	int n = 0;
+	int i = 0;
+
+	struct Re{
+		int dis;
+		string dir;
+	};
+	struct Re re[size];
+
+	int num =0;
+	int count =0;
+	queue<int > out;
+	stack<int > st;
+	que.push(0);
+	
+	while(!que.empty() && map->getTile(count)->getGoal()==nullptr){
+		next = que.front();
 		que.pop();
 
-		for (int direction = 0; direction < 5; ++direction) {
-			if(dx[direction]==0 ){
-				if(dungeon->getTile(x,y)->getNorth()!= nullptr ){
-					next_y=(y-1);
+		for(n=0;n<4;n++){
+			if(n==0){
+				if(map->getTile(next)->getNorth()!=nullptr && map->getTile(next-map->getWidth())->getVisit()==nullptr){
+					que.push(next-map->getWidth());
+					cout << "N" << endl;
+					st.push(count);
+					re[num].dis = count;
+					re[num].dir = "S";
+					num++;
+					map->getTile(next)->setVisit(map->getTile(next));
 				}
 			}
-			if(dx[direction]==1 ){
-				if(dungeon->getTile(x,y)->getEast()!= nullptr ){
-					next_x=(x+1);
+			if(n==1){
+				if(map->getTile(next)->getEast()!=nullptr && map->getTile(next+1)->getVisit()==nullptr){
+					que.push(next+1);
+					cout << "E" << endl;
+					st.push(count);
+					re[num].dis = count;
+					re[num].dir = "W";
+					num++;
+					map->getTile(next)->setVisit(map->getTile(next));
 				}
 			}
-			if(dx[direction]==2 ){
-				if(dungeon->getTile(x,y)->getSouth()!= nullptr ){
-					next_y=(y+1);
+			if(n==2){
+				if(map->getTile(next)->getSouth()!=nullptr && map->getTile(next+map->getWidth())->getVisit()==nullptr){
+					que.push(next+map->getWidth());
+					cout << "S" << endl;
+					st.push(count);
+					re[num].dis = count;
+					re[num].dir = "N";
+					num++;
+					map->getTile(next)->setVisit(map->getTile(next));
 				}
 			}
-			if(dx[direction]==3 ){
-				if(dungeon->getTile(x,y)->getWest()== nullptr ){
-					next_x=(x-1);
+			if(n==3){
+				if(map->getTile(next)->getWest()!=nullptr && map->getTile(next-1)->getVisit()==nullptr){
+					que.push(next-1);
+					cout << "W" << endl;
+					st.push(count);
+					re[num].dis = count;
+					re[num].dir = "E";
+					num++;
+					map->getTile(next)->setVisit(map->getTile(next));
 				}
 			}
-			if(dx[direction]==4 ){
-				if(dungeon->getTile(x,y)->getWarp()== nullptr ){
-					//none
+			if(n==4){		
+				if(map->getTile(next)->getWarp()!=nullptr && map->getTile(next)->getWarp()->getVisit()==nullptr){
+					//SwitchFunc(map);
 				}
-			}
-
-			if(dungeon->getTile(next_x,next_y)->getVisit()==nullptr){
-				que.push(make_pair(next_x, next_y));
-				dungeon->getTile(next_x,next_y)->setVisit(dungeon->getTile(x,y));
-				dist[next_x][next_y] = dist[x][y] + 1;
-				prev_x[next_x][next_y] = x;
-                prev_y[next_x][next_y] = y;
-			}
+			}	
 		}
-		if(((x+1)*(y+1))==((dungeon->length)*(dungeon->width))){
-			break;
-		}
+		count++;
 	}
-
-	rtv=true;
-	
+	int cNum = 0;
+	int before = size*size;
+	cout << "--------" << endl;
+	do{
+		cNum = st.top();
+		st.pop();
+		if(cNum != before){
+			if(cNum < before){
+				cout << "--------" << endl;
+				cout << re[num-i].dir << endl;
+				answer+=re[num-i].dir;
+				before = cNum;
+			}
+		}
+		i++;
+	}while(!st.empty());
+	cout << re[0].dir << endl;
+	answer+= re[0].dir;
+	rtv = true;
 	return rtv;
 }
 
+/*int PlayerBot::SwitchFunc(Dungeon * map){
+	for(int n=0;n<3;n++){
+		switch(n){
+			case 0: 
+				if(map->getTile(next)->getWarp()->getNorth()!=nullptr && map->getTile(next-map->getWidth())->getVisit()==nullptr){
+					que.push(next-map->getWidth());
+				}
+				break;
+			case 1:
+				if(map->getTile(next)->getWarp()->getEast()!=nullptr && map->getTile(next+1)->getVisit()==nullptr){
+					que.push(next+1);
+				}
+				break;
+			case 2:
+				if(map->getTile(next)->getWarp()->getSouth()!=nullptr && map->getTile(next+map->getWidth())->getVisit()==nullptr){
+					que.push(next+map->getWidth());
+				}
+				break;
+			case 3:
+				if(map->getTile(next)->getWarp()->getWest()!=nullptr && map->getTile(next-1)->getVisit()==nullptr){
+					que.push(next-1);
+				}
+				break;
+		}
+	}
+}*/
 
 void PlayerBot::saveAnswer(void )
 {
-	
 	ofstream ofs("answer.txt");
 	ofs << answer;
 
