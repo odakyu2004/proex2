@@ -9,18 +9,44 @@
 
 using namespace std;
 
+int run00(void );
+int run01(void );
+int run02(void );
 int run03(void );
 
 int main()
 {
+	return run03();
+}
+
+int run03(void)
+{
 	Dungeon d1;
-	cout << "OK0" << endl;
+
 	d1.loadData();
-	cout << "OK1" << endl;
+
 	PlayerBot bot;
 	bot.findGoal(&d1);
-	cout << "OK2" << endl;
 	bot.saveAnswer();
 
+	return 0;
+}
+
+int run02(void )
+{
+	Dungeon d1;
+	d1.loadData();
+	return 0;
+}
+
+int run01(void )
+{
+	Tile tile;
+	return 0;
+}
+
+int run00(void )
+{
+	cout << "test" << endl;
 	return 0;
 }
